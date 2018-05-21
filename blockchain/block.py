@@ -24,5 +24,21 @@ class Block:
 
         return hash.hexdigest()
 
+    def mine(self, difficulty=5):
+
+        hash_prefix = '0' * difficulty
+
+        while not self.hash.startswith(hash_prefix):
+            self.nounce += 1
+            self.hash = self.calculate_hash()
+
     def __str__(self):
         return self.hash
+
+    def print(self):
+        print("hash:", self.hash)
+        print("data:", self.data)
+        print("timestamp:", self.timestamp)
+        print("nounce:", self.nounce)
+        print("prev_hash:", self.previous_hash)
+        print()
