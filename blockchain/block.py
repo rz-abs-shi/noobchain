@@ -8,12 +8,12 @@ class Block:
 
         self.data = data
         self.previous_hash = previous_hash
-        self.nounce = 0
+        self.nonce = 0
         self.timestamp = datetime.now().timestamp()
         self.hash = self.calculate_hash()
 
     def get_message(self):
-        return self.data + self.previous_hash + str(self.nounce) + str(self.timestamp)
+        return self.data + self.previous_hash + str(self.nonce) + str(self.timestamp)
 
     def calculate_hash(self):
 
@@ -29,7 +29,7 @@ class Block:
         hash_prefix = '0' * difficulty
 
         while not self.hash.startswith(hash_prefix):
-            self.nounce += 1
+            self.nonce += 1
             self.hash = self.calculate_hash()
 
     def __str__(self):
@@ -39,6 +39,6 @@ class Block:
         print("hash:", self.hash)
         print("data:", self.data)
         print("timestamp:", self.timestamp)
-        print("nounce:", self.nounce)
+        print("nounce:", self.nonce)
         print("prev_hash:", self.previous_hash)
         print()
