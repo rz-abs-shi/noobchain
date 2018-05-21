@@ -1,6 +1,5 @@
-from datetime import datetime
 import hashlib
-import base64
+from datetime import datetime
 
 
 class Block:
@@ -23,9 +22,7 @@ class Block:
         hash = hashlib.sha256()
         hash.update(message)
 
-        digest = hash.digest()
-
-        return base64.b64encode(digest).decode()
+        return hash.hexdigest()
 
     def __str__(self):
         return self.hash
