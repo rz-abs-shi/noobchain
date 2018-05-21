@@ -10,6 +10,17 @@ class BlockChain:
         self.blocks.append(block)
 
     def check_valid(self):
+
+        prev_hash = "0"
+        for block in self.blocks:
+            if block.calculate_hash() != block.hash:
+                return False
+
+            if block.previous_hash != prev_hash:
+                return False
+
+            prev_hash = block.hash
+
         return True
 
     def last_block_hash(self):
