@@ -1,8 +1,11 @@
-from blockchain.block import Block
+from blockchain import Block, BlockChain
 
 
 if __name__ == '__main__':
 
-    block = Block("Start block", "0")
+    blockchain = BlockChain()
 
-    print(block.hash)
+    blockchain.append_new_block("Start block")
+    blockchain.append_new_block("Next block")
+    blockchain.append_new_block("Third block")
+    blockchain.print()

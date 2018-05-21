@@ -25,7 +25,7 @@ class Block:
 
         digest = hash.digest()
 
-        return base64.b64encode(digest)
+        return base64.b64encode(digest).decode()
 
     def __str__(self):
         return self.hash
