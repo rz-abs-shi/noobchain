@@ -1,4 +1,4 @@
-from crypto.utils import generate_rsa_keys
+from crypto.rsa import new_keys
 
 
 class Wallet:
@@ -10,4 +10,4 @@ class Wallet:
         self.generate_key_pair()
 
     def generate_key_pair(self):
-        self.private_key, self.public_key = generate_rsa_keys()
+        self.private_key, self.public_key = new_keys(2048)
