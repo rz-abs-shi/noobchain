@@ -1,15 +1,17 @@
-from blockchain import Block, BlockChain
+from blockchain import Block, BlockChain, Wallet, Transaction
 from blockchain import DIFFICULTY
 
 
 if __name__ == '__main__':
 
-    blockchain = BlockChain()
+    wallet1 = Wallet()
+    wallet2 = Wallet()
 
-    block = blockchain.append_new_block("Start block")
-    blockchain.append_new_block("Next block")
-    blockchain.append_new_block("Third block")
+    print("Wallet 1")
+    wallet1.print()
 
-    # blockchain.print()
+    transaction = Transaction(wallet1.public_key_as_str(), wallet2.public_key_as_str(), 5)
+    transaction.generate_signature(wallet1.private_key)
 
-    print("Blockchain is valid: " + str(blockchain.check_valid()))
+    print("transaction verified?")
+    print(transaction.verify_signature())
