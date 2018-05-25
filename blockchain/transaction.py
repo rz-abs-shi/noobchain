@@ -23,7 +23,7 @@ class Transaction:
 
     def generate_signature(self, sender_private_key):
         message = self.sender + self.recipient + str(self.value)
-        self.signature = sign(message, sender_private_key)
+        self.signature = sign(message.encode(), sender_private_key)
 
     def verify_signature(self):
         if not self.signature:
@@ -31,4 +31,4 @@ class Transaction:
 
         message = self.sender + self.recipient + str(self.value)
         sender_public_key = import_key(self.sender)
-        return verify(message, self.signature, sender_public_key)
+        return verify(message.encode(), self.signature, sender_public_key)
