@@ -1,4 +1,5 @@
 from Crypto.PublicKey import RSA
+import hashlib
 
 
 def generate_rsa_keys(bits=2048):
@@ -11,3 +12,13 @@ def generate_rsa_keys(bits=2048):
     public_key = new_key.publickey().exportKey("PEM")
     private_key = new_key.exportKey("PEM")
     return private_key, public_key
+
+
+def sha256(message: str):
+
+    message = message.encode()
+
+    hash = hashlib.sha256()
+    hash.update(message)
+
+    return hash.hexdigest()
