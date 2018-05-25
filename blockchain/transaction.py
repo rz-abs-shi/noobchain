@@ -6,12 +6,14 @@ class Transaction:
 
     sequence = 0  # number of transactions created
 
-    def __init__(self, from_pub_key: str, to_pub_key: str, value: float, ):
-        self.sender = from_pub_key
-        self.recipient = to_pub_key
+    def __init__(self, from_pub_key_str: str, to_pub_key_str: str, value: float, inputs: list):
+        self.sender = from_pub_key_str
+        self.recipient = to_pub_key_str
         self.value = value
         self.transaction_id = None
         self.signature = None
+        self.inputs = inputs  # transaction inputs for creating this transaction
+        self.outputs = None  # transaction outputs created from this transaction
 
     def calculate_hash(self):
         # increase the sequence to avoid 2 identical transactions having the same hash
