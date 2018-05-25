@@ -1,5 +1,5 @@
-import hashlib
 from datetime import datetime
+from crypto.utils import sha256
 
 
 class Block:
@@ -17,12 +17,8 @@ class Block:
 
     def calculate_hash(self):
 
-        message = self.get_message().encode()
-
-        hash = hashlib.sha256()
-        hash.update(message)
-
-        return hash.hexdigest()
+        message = self.get_message()
+        return sha256(message)
 
     def mine(self, difficulty=5):
 
