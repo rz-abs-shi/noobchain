@@ -34,8 +34,13 @@ class Wallet:
 
         return amount
 
-    def update_utxos(self):
-        pass
+    def update_utxos(self, all_utxos: Dict[str, TransactionOutput]):
+        self.utxos = {}
+        my_public_key = self.public_key_as_str()
+
+        for output_id, utxo in all_utxos.items():
+            if utxo.is_mine(my_public_key):
+                self.utxos[output_id] = utxo
 
     def send_funds(self):
         pass
