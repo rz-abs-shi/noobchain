@@ -1,11 +1,14 @@
 from blockchain import Block, BlockChain, Wallet, Transaction
 from blockchain import DIFFICULTY
-
+from typing import Dict
+from blockchain import TransactionOutput
 
 if __name__ == '__main__':
 
     wallet1 = Wallet()
     wallet2 = Wallet()
+    # a dictionary tracking unspent transaction outputs
+    utxos = {}  # type: Dict[str, TransactionOutput]
 
     print("Wallet 1")
     wallet1.print()
