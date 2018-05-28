@@ -1,5 +1,7 @@
 from crypto.utils import sha256
 from crypto.rsa import sign, verify, import_key
+from typing import List
+from blockchain import TransactionOutput, TransactionInput
 
 
 class Transaction:
@@ -12,8 +14,12 @@ class Transaction:
         self.value = value
         self.transaction_id = None
         self.signature = None
-        self.inputs = inputs  # transaction inputs for creating this transaction
-        self.outputs = None  # transaction outputs created from this transaction
+
+        # transaction inputs for creating this transaction
+        self.inputs = inputs  # type: List[TransactionInput]
+
+        # transaction outputs created from this transaction
+        self.outputs = None  # type: List[TransactionOutput]
 
     def calculate_hash(self):
         # increase the sequence to avoid 2 identical transactions having the same hash
