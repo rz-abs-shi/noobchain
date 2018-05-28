@@ -2,6 +2,9 @@ from crypto.utils import sha256
 
 
 class TransactionOutput:
+    """
+    The result of doing a transaction
+    """
 
     def __init__(self, recipient_public_key_str: str, value: float, parent_transaction_id: str):
         self.recipient = recipient_public_key_str
