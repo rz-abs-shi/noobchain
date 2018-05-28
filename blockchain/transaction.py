@@ -40,3 +40,22 @@ class Transaction:
         message = self.sender + self.recipient + str(self.value)
         sender_public_key = import_key(self.sender)
         return verify(message.encode(), self.signature, sender_public_key)
+
+    def get_outputs_value(self):
+
+        amount = 0
+
+        for output in self.outputs:
+            amount += output.value
+
+        return amount
+
+    def get_inputs_value(self):
+
+        amount = 0
+
+        for input in self.inputs:
+            if input.utxo:
+                amount += input.utxo.value
+
+        return amount
