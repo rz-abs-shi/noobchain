@@ -1,6 +1,6 @@
 from crypto.utils import sha256
 from crypto.rsa import sign, verify, import_key
-from typing import List
+from typing import List, Dict
 from blockchain import TransactionOutput, TransactionInput
 
 
@@ -19,7 +19,7 @@ class Transaction:
         self.inputs = inputs  # type: List[TransactionInput]
 
         # transaction outputs created from this transaction
-        self.outputs = None  # type: List[TransactionOutput]
+        self.outputs = []  # type: List[TransactionOutput]
 
     def calculate_hash(self):
         # increase the sequence to avoid 2 identical transactions having the same hash
@@ -59,3 +59,42 @@ class Transaction:
                 amount += input.utxo.value
 
         return amount
+
+    # Returns true if new transaction could be created.
+    def process_transaction(self, all_utxos: Dict[str, TransactionOutput], minimum_transaction):
+
+        if not self.verify_signature():
+            print("Transaction signiture failed to verify")
+            return False
+
+        # gather transaction inputs (make sure they are unspent)
+        for inp in self.inputs:
+            inp.utxo = all_utxos.get(inp.transaction_output_id)
+
+        inputs_value = self.get_inputs_value()
+
+        if inputs_value < minimum_transaction:
+            print("Transaction inputs to small: " + str(inputs_value))
+            return False
+
+        if inputs_value < self.value:
+            print("Transaction inputs are not sufficient to do transaction")
+
+        self.transaction_id = self.calculate_hash()
+
+        self.outputs.append(TransactionOutput(self.recipient, self.value, self.transaction_id))
+
+        leftover_value = inputs_value - self.value
+        if leftover_value > 0:
+            self.outputs.append(TransactionOutput(self.sender, leftover_value, self.transaction_id))
+
+        # add outputs to unspent utxos list
+        for output in self.outputs:
+            all_utxos[output.id] = output
+
+        # remove inputs from utxos list as spent
+        for inp in self.inputs:
+            if inp.utxo:
+                del all_utxos[inp.utxo.id]
+
+        return True
