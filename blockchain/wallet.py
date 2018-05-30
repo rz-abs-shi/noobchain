@@ -1,15 +1,18 @@
 from typing import Dict
 
-from blockchain import TransactionOutput
+from blockchain import TransactionOutput, Transaction, TransactionInput
 from crypto.rsa import new_keys
+from Crypto.PublicKey.RSA import RsaKey
 
 
 class Wallet:
 
-    def __init__(self):
-        self.public_key = None
-        self.private_key = None
+    def __init__(self, all_utxos: Dict[str, TransactionOutput]):
+        self.public_key = None  # type: RsaKey
+        self.private_key = None  # type: RsaKey
+
         self.utxos = {}  # type: Dict[str, TransactionOutput]
+        self.all_utxos = all_utxos
 
         self.generate_key_pair()
 
@@ -34,13 +37,37 @@ class Wallet:
 
         return amount
 
-    def update_utxos(self, all_utxos: Dict[str, TransactionOutput]):
+    def update_utxos(self):
         self.utxos = {}
         my_public_key = self.public_key_as_str()
 
-        for output_id, utxo in all_utxos.items():
+        for output_id, utxo in self.all_utxos.items():
             if utxo.is_mine(my_public_key):
                 self.utxos[output_id] = utxo
 
-    def send_funds(self):
-        pass
+    def send_funds(self, recipient_public_key_str: str, value: float) -> Transaction:
+        self.update_utxos()
+
+        if self.get_balance() < value:
+            raise Exception("Not enough balance")
+
+        if value <= 0:
+            raise Exception("Value should be positive")
+
+        inputs = []
+        total = 0
+        for transaction_id, utxo in self.utxos:
+            total += utxo.value
+            inp = TransactionInput(transaction_id)
+            inputs.append(inp)
+
+            if total >= value:
+                break
+
+        transaction = Transaction(self.public_key_as_str(), recipient_public_key_str, value, inputs)
+        transaction.generate_signature(self.private_key_as_str())
+
+        for inp in inputs:
+            del self.utxos[inp.transaction_output_id]
+
+        return transaction
