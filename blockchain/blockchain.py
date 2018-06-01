@@ -1,17 +1,22 @@
-from blockchain import Block, DIFFICULTY
+from blockchain import Block
 
 
 class BlockChain:
 
-    def __init__(self):
+    def __init__(self, difficulty):
         self.blocks = []
+        self.difficulty = difficulty
 
-    def append_block(self, block: Block):
+    def append_block(self, block: Block, mine_block=True):
+        if mine_block:
+            block.mine(self.difficulty)
+            print("Block mined :)")
+
         self.blocks.append(block)
 
     def check_valid(self):
 
-        hash_prefix = "0" * DIFFICULTY
+        hash_prefix = "0" * self.difficulty
 
         prev_hash = "0"
         for block in self.blocks:
@@ -34,15 +39,13 @@ class BlockChain:
         else:
             return "0"
 
-    def append_new_block(self, data: str, mine=True):
+    def append_new_block(self, mine=True):
 
-        block = Block(data, self.last_block_hash())
+        block = Block(self.last_block_hash())
 
         if mine:
-            block.mine(DIFFICULTY)
+            block.mine(self.difficulty)
             print("Block mined :)")
-
-        block.print()
 
         self.append_block(block)
 

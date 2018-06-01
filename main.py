@@ -11,6 +11,8 @@ if __name__ == '__main__':
     minimum_transaction = 0.1
     difficulty = 3
 
+    blockchain = BlockChain(difficulty)
+
     wallet_one = Wallet(utxos)
     wallet_two = Wallet(utxos)
 
@@ -18,3 +20,9 @@ if __name__ == '__main__':
 
     # create genesis transaction, which sends 100 coins to wallet_one
     genesis_transaction = get_genesis_transaction(wallet_coinbase, wallet_one, 100)
+
+    print("Creating and mining genesis block")
+    genesis = Block("0")
+    genesis.add_transaction(genesis_transaction, utxos, minimum_transaction)
+
+    blockchain.append_block(genesis)
