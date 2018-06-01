@@ -65,4 +65,4 @@ if __name__ == '__main__':
     print("Block 3")
     block3.print()
 
-    print("is chain valid?", blockchain.check_valid())
+    print("is chain valid?", blockchain.check_valid(genesis_transaction))

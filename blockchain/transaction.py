@@ -64,7 +64,7 @@ class Transaction:
     def process_transaction(self, all_utxos: Dict[str, TransactionOutput], minimum_transaction: float):
 
         if not self.verify_signature():
-            print("Transaction signiture failed to verify")
+            print("Transaction signature failed to verify")
             return False
 
         # gather transaction inputs (make sure they are unspent)
@@ -74,7 +74,7 @@ class Transaction:
         inputs_value = self.get_inputs_value()
 
         if inputs_value < minimum_transaction:
-            print("Transaction inputs to small: " + str(inputs_value))
+            print("Transaction inputs too small: " + str(inputs_value))
             return False
 
         if inputs_value < self.value:

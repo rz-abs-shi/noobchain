@@ -6,7 +6,7 @@ def get_genesis_transaction(sender_wallet, recipient_wallet, value, all_utxos):
         sender_wallet.public_key_as_str(),
         recipient_wallet.public_key_as_str(),
         value,
-        None
+        []
     )
 
     genesis_transaction.generate_signature(sender_wallet.private_key)  # manually sign genesis transaction
