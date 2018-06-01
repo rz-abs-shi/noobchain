@@ -10,7 +10,7 @@ class BlockChain:
     def append_block(self, block: Block, mine_block=True):
         if mine_block:
             block.mine(self.difficulty)
-            print("Block mined :)")
+            print("Block mined: " + block.hash)
 
         self.blocks.append(block)
 
@@ -45,7 +45,7 @@ class BlockChain:
 
         if mine:
             block.mine(self.difficulty)
-            print("Block mined :)")
+            print("Block mined: " + block.hash)
 
         self.append_block(block)
 

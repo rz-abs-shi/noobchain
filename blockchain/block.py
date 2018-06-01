@@ -30,7 +30,7 @@ class Block:
             self.hash = self.calculate_hash()
 
     def get_merkle_root(self) -> str:
-        transaction_ids = [transaction.id for transaction in self.transactions]
+        transaction_ids = [transaction.transaction_id for transaction in self.transactions]
         return merkle_root(transaction_ids)
 
     def add_transaction(self, transaction, all_utxos, minimum_transaction) -> bool:
@@ -51,6 +51,7 @@ class Block:
 
     def print(self):
         print("hash:", self.hash)
+        print("transactions_count", len(self.transactions))
         print("merkle_root:", self.get_merkle_root())
         print("timestamp:", self.timestamp)
         print("nounce:", self.nonce)

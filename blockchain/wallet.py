@@ -30,6 +30,8 @@ class Wallet:
         print("Private key: " + self.private_key_as_str())
 
     def get_balance(self):
+        self.update_utxos()
+
         amount = 0
 
         for utxo in self.utxos.values():
@@ -49,14 +51,16 @@ class Wallet:
         self.update_utxos()
 
         if self.get_balance() < value:
-            raise Exception("Not enough balance")
+            print("Not enough balance, transaction discarded")
+            return
 
         if value <= 0:
-            raise Exception("Value should be positive")
+            print("Value should be positive, transaction discarded")
+            return
 
         inputs = []
         total = 0
-        for transaction_id, utxo in self.utxos:
+        for transaction_id, utxo in self.utxos.items():
             total += utxo.value
             inp = TransactionInput(transaction_id)
             inputs.append(inp)
@@ -65,7 +69,7 @@ class Wallet:
                 break
 
         transaction = Transaction(self.public_key_as_str(), recipient_public_key_str, value, inputs)
-        transaction.generate_signature(self.private_key_as_str())
+        transaction.generate_signature(self.private_key)
 
         for inp in inputs:
             del self.utxos[inp.transaction_output_id]
