@@ -61,7 +61,7 @@ class Transaction:
         return amount
 
     # Returns true if new transaction could be created.
-    def process_transaction(self, all_utxos: Dict[str, TransactionOutput], minimum_transaction):
+    def process_transaction(self, all_utxos: Dict[str, TransactionOutput], minimum_transaction: float):
 
         if not self.verify_signature():
             print("Transaction signiture failed to verify")
