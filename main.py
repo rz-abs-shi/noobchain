@@ -1,20 +1,20 @@
 from blockchain import Block, BlockChain, Wallet, Transaction
-from blockchain import DIFFICULTY
 from typing import Dict
 from blockchain import TransactionOutput
+from blockchain.genesis import get_genesis_transaction
+
 
 if __name__ == '__main__':
 
-    wallet1 = Wallet()
-    wallet2 = Wallet()
     # a dictionary tracking unspent transaction outputs
     utxos = {}  # type: Dict[str, TransactionOutput]
+    minimum_transaction = 0.1
+    difficulty = 3
 
-    print("Wallet 1")
-    wallet1.print()
+    wallet_one = Wallet(utxos)
+    wallet_two = Wallet(utxos)
 
-    transaction = Transaction(wallet1.public_key_as_str(), wallet2.public_key_as_str(), 5)
-    transaction.generate_signature(wallet1.private_key)
+    wallet_coinbase = Wallet(utxos)
 
-    print("transaction verified?")
-    print(transaction.verify_signature())
+    # create genesis transaction, which sends 100 coins to wallet_one
+    genesis_transaction = get_genesis_transaction(wallet_coinbase, wallet_one, 100)
